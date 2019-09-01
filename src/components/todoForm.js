@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 
+import DatePicker from "react-datepicker";
+ 
+import "react-datepicker/dist/react-datepicker.css";
 
 export default class taskForm extends Component {
     constructor(props) {
@@ -9,7 +12,7 @@ export default class taskForm extends Component {
         this.state={
             content:'',
             priority:'',
-            dueDate:Date
+            dueDate:new Date()
         }
    
        }
@@ -23,26 +26,23 @@ export default class taskForm extends Component {
         handlePirorityChange(e){
             this.setState({priority:e.target.value})
         }
-        handleDueDateChange(e){
-          
-            var dd=e.target.value.split("-");
-           var due=new Date(dd[0],dd[1],dd[2]).toDateString();
-            this.setState({dueDate:due})
-           
-            
-        }
-        
+        handleChange = date => {
+            this.setState({
+              startDate: date
+            });
+          };
         handleSubmit(e) {
             e.preventDefault();
            
             var text 		= this.state.content.trim();
             var prior=this.state.priority.trim();
-            var due=this.state.dueDate.trim();
+            var d=this.state.dueDate;
+            console.log(d);
             if (!text || !prior) {
                 return;
             }
-            this.props.onTasktSubmit({ content: text,priority:prior,dueDate:due});
-            this.setState({content: '',priority:''});
+            this.props.onTasktSubmit({ content: text,priority:prior,dueDate:d});
+            this.setState({content: '',priority:'',dueDate:new Date()});
         }
         
     render() {
@@ -64,10 +64,10 @@ export default class taskForm extends Component {
 				 onChange={(e) => this.handlePirorityChange(e)} 
 			 /> 
          
-         <Input type="text" 
-      placeholder="Add a date"
-         
-       onChange={(e) => this.handleDueDateChange(e)} />
+         <DatePicker
+        selected={this.state.dueDate}
+        onChange={this.handleChange}
+      />
 
 
 			<p><Button type="submit" className="btn-right" variant="outlined" color="primary">

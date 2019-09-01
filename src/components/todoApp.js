@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import Todo from './todo'
+
 import TodoList from './todoList'
 import TaskForm from './todoForm'
 
